@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <title>L2E Mini Project</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="http://login2explore.com/jpdb/resources/js/0.0.3/jpdb-commons.js"></script>
+    <style>
+        .block {
+            position: fixed;
+            top: 30%;
+            left: 40%;
+            width: 650px;
+            height: 400px;
+            margin-top: -9em;
+            margin-left: -15em;
+            border: 1px solid rgb(192, 187, 187);
+            background-color: #f3f3f3;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="block">
+        <section>
+            <h1>Read data from the Database.</h1>
+        </section>
+        <section>
+            <input id="email" maxlength="50" placeholder="Enter email" name="email" type="email" /><br><br>
+            <input type="button" value="SHOW DATA" onclick="showData();" />
+        </section>
+        <p id="show"></p>
+    </div>
+    <script>
+        function showData() {
+            var token = "90938573|-31948824965625959|90946653";
+            var dbname = "SAMPLE";
+            var relationName = "EMP-REL";
+            var email = $("#email").val();
+            var jsonStr = {
+                empEmail: email
+            };
+            var reqString = createGETRequest(token, dbname, relationName, JSON.stringify(jsonStr));
+            alert(reqString);
+            jQuery.ajaxSetup({ async: false });
+            var resultObj = executeCommandAtGivenBaseUrl(reqString, "http://api.login2explore.com:5577", "/api/irl");
+            jQuery.ajaxSetup({ async: true });
+            var data = JSON.stringify(resultObj);
+            var res = data.split("\"");
+            var mainContainer = document.getElementById("show");
+            mainContainer.innerHTML = "EmpName : " + res[10].replace("\\", ",") + "  Employee-id : " + res[6].replace("\\", ",") + "        email : " + res[14].replace("\\", "");
+            alert(res);
+        }
+    </script>
+</body>
+
+</html>

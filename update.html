@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Update data</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="http://login2explore.com/jpdb/resources/js/0.0.3/jpdb-commons.js"></script>
+    <style>
+        .block {
+            position: fixed;
+            top: 30%;
+            left: 40%;
+            width: 650px;
+            height: 400px;
+            margin-top: -9em;
+            margin-left: -15em;
+            border: 1px solid rgb(192, 187, 187);
+            background-color: #f3f3f3;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="block">
+        <section>
+            <h1>Update Your password</h1>
+        </section>
+        <section><input id="empId" maxlength="50" placeholder="Enter Record Number" name="empId" type="text" /><br><br>
+            <p>Enter your new Password.</p>
+            <input id="password" maxlength="50" placeholder="Password" name="password" type="password" /><br><br>
+            <input type="button" value="UPDATE" onclick="updateData();" />
+        </section>
+    </div>
+    <p id="show"></p>
+    <script>
+        function updateData() {
+            var token = "90938573|-31948824965625959|90946653";
+            var dbname = "SAMPLE";
+            var relationName = "EMP-REL";
+            var empId = parseInt($("#empId").val());
+            var password = document.getElementById("password").value;
+            var jsonObj = {
+                empPassword: password,
+            };
+            var reqString = createUPDATERecordRequest(token, JSON.stringify(jsonObj), dbname, relationName, empId);
+            alert(reqString);
+            jQuery.ajaxSetup({ async: false });
+            var resultObj = executeCommandAtGivenBaseUrl(reqString,
+                "http://api.login2explore.com:5577", "/api/iml");
+            jQuery.ajaxSetup({ async: true });
+            alert(JSON.stringify(resultObj));
+        }
+    </script>
+</body>
+
+</html>
